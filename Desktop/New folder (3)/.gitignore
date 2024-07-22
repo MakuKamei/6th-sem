@@ -1,0 +1,46 @@
+Application Data/
+Cookies/
+Local Settings/
+My Documents/
+NetHood/
+PrintHood/
+Recent/
+SendTo/
+Start Menu/
+Templates/
+*.log
+.anaconda/
+.bash_history
+.bash_profile
+.conda/
+.condarc
+.continuum/
+.docker/
+.gitconfig
+.ipython/
+.jupyter/
+.keras/
+.lesshst
+.ssh/
+.streamlit/
+.viminfo
+.vscode/
+AppData/
+Contacts/
+Documents/
+Downloads/
+Favorites/
+Links/
+Music/
+NTUSER.DAT*
+OneDrive/
+Pictures/
+Plant-disease-prediction/
+Profile-page/
+Saved Games/
+Searches/
+Videos/
+anaconda3/
+aws/
+miniconda3/
+myenv/
