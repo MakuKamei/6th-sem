@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predict Diabetes Risk</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        form {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="number"], select {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            display: block;
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .prediction-result {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .prediction-result h2 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Predict Diabetes Risk</h1>
+        <form id="predictionForm" method="post" action="/predict">
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender" required>
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" min="0" required>
+
+            <label for="hypertension">Hypertension (1 if yes, 0 if no):</label>
+            <input type="number" id="hypertension" name="hypertension" min="0" max="1" required>
+
+            <label for="heart_disease">Heart Disease (1 if yes, 0 if no):</label>
+            <input type="number" id="heart_disease" name="heart_disease" min="0" max="1" required>
+
+            <label for="smoking_history">Smoking History:</label>
+            <select id="smoking_history" name="smoking_history" required>
+                <option value="">Select Smoking History</option>
+                <option value="never">Never</option>
+                <option value="former">Former</option>
+                <option value="current">Current</option>
+                <option value="not current">Not Current</option>
+                <option value="No Info">No Info</option>
+                <option value="ever">Ever</option>
+            </select>
+
+            <label for="bmi">BMI:</label>
+            <input type="number" id="bmi" name="bmi" step="0.01" required>
+
+            <label for="HbA1c_level">HbA1c Level:</label>
+            <input type="number" id="HbA1c_level" name="HbA1c_level" step="0.01" required>
+
+            <label for="blood_glucose_level">Blood Glucose Level:</label>
+            <input type="number" id="blood_glucose_level" name="blood_glucose_level" step="0.01" required>
+
+            <button type="submit">Predict</button>
+        </form>
+
+        <div id="predictionResult" class="prediction-result" style="display: none;">
+            <h2>Prediction Result</h2>
+            <p id="predictionMessage"></p>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('predictionForm');
+        form.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(form);
+            const response = await fetch('/predict', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                const errorMessage = await response.text();
+                alert('Prediction failed: ' + errorMessage);
+                return;
+            }
+
+            const result = await response.json();
+            const predictionMessage = document.getElementById('predictionMessage');
+            predictionMessage.textContent = `Prediction: ${result.prediction}`;
+            document.getElementById('predictionResult').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
